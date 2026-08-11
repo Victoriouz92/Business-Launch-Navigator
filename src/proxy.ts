@@ -13,10 +13,5 @@ export default auth((req) => {
 })
 
 export const config = {
-  matcher: [
-    "/dashboard/:path*",
-    "/expenses/:path*",
-    "/step/:path*",
-    "/settings/:path*",
-  ],
+  matcher: ["/settings/:path*"],
 }

@@ -77,5 +77,6 @@ export const paymentsSteps: Step[] = [
       { index: 1, label: "Верифицирай бизнеса (ЕИК + IBAN)" },
       { index: 2, label: "Интегрирай Stripe в сайта или ползвай Payment Links" },
     ],
+    notRelevantFor: ["offline"],
   },
 ]

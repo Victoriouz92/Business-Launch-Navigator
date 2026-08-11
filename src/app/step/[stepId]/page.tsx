@@ -1,8 +1,9 @@
 import { getStepById, CATEGORIES, STEPS } from "@/data/roadmap"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, ExternalLink, AlertTriangle, FileText, Landmark, XCircle, Wallet, Lightbulb } from "lucide-react"
+import { ArrowLeft, ExternalLink, AlertTriangle, FileText, Landmark, XCircle, Wallet, Lightbulb, Download } from "lucide-react"
 import { InsuranceCalculator } from "@/components/InsuranceCalculator"
+import { VatChecker } from "@/components/VatChecker"
 import { StepCompleteButton } from "@/components/StepCompleteButton"
 import { StepChecklist } from "@/components/StepChecklist"
 import { Footer } from "@/components/Footer"
@@ -11,6 +12,25 @@ import { UserMenu } from "@/components/UserMenu"
 
 interface Props {
   params: Promise<{ stepId: string }>
+}
+
+/**
+ * Confirmed official download links (Registry Agency template page, checked
+ * this session — each URL resolved to a real PDF/DOCX file). Documents not
+ * listed here don't have a distinct downloadable template (e.g. they're
+ * personal documents, or obtained as the output of an earlier step).
+ */
+const REGISTRY_TEMPLATES_PAGE = "https://portal.registryagency.bg/document-template-cr"
+const DOCUMENT_LINKS: Record<string, { url: string; hasFile: boolean }> = {
+  "Учредителен акт на ЕООД": { url: "https://portal.registryagency.bg/nested-page-file-download/938-1734089039", hasFile: true },
+  "Учредителен акт": { url: "https://portal.registryagency.bg/nested-page-file-download/938-1734089039", hasFile: true },
+  "Учредителен акт (копие)": { url: "https://portal.registryagency.bg/nested-page-file-download/938-1734089039", hasFile: true },
+  "Декларация по чл. 13, ал. 4 от ТЗ": { url: "https://portal.registryagency.bg/nested-page-file-download/524-1600089858", hasFile: true },
+  "Декларация по чл. 141, ал. 8 от ТЗ": { url: "https://portal.registryagency.bg/nested-page-file-download/856-1612775228", hasFile: true },
+  "Заявление А4 (попълнено)": { url: "https://portal.registryagency.bg/nested-page-file-download/489-1711467727", hasFile: true },
+  "Протокол-решение на едноличния собственик": { url: REGISTRY_TEMPLATES_PAGE, hasFile: false },
+  "Протокол-решение": { url: REGISTRY_TEMPLATES_PAGE, hasFile: false },
+  "Декларации по ТЗ": { url: REGISTRY_TEMPLATES_PAGE, hasFile: false },
 }
 
 export default async function StepPage({ params }: Props) {
@@ -35,6 +55,9 @@ export default async function StepPage({ params }: Props) {
   }
 
   const difficultyLabels = ["", "Лесно", "Не е сложно", "Средно", "Трудно", "Професионална помощ"]
+
+  const officialLinks = step.usefulLinks.filter((l) => l.isOfficial)
+  const otherLinks = step.usefulLinks.filter((l) => !l.isOfficial)
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
@@ -64,7 +87,7 @@ export default async function StepPage({ params }: Props) {
       </header>
 
       <main className="max-w-3xl mx-auto px-4 py-8 space-y-8">
-        {/* Priority + Difficulty + Cost + Time — large accent cards */}
+        {/* Priority + Difficulty + Cost + Time — at-a-glance summary */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <AccentCard
             color={step.priorityLevel === "legally_required" ? "red" : step.priorityLevel === "strongly_recommended" ? "amber" : "green"}
@@ -132,22 +155,74 @@ export default async function StepPage({ params }: Props) {
           </div>
         )}
 
-        {/* Explanation */}
-        <Section title="Обяснение">{step.explanation}</Section>
+        {/* 1. Какво трябва да направиш */}
+        <Section title="Какво трябва да направиш">{step.explanation}</Section>
 
-        {/* Budget breakdown for planning-budget step */}
         {step.id === "planning-budget" && <BudgetBreakdown />}
-
-        {/* Insurance calculator for planning-budget step */}
         {step.id === "planning-budget" && <InsuranceCalculator />}
+        {step.id === "legal-vat-check" && <VatChecker />}
 
-        {/* Why it matters */}
+        {/* 2. Необходими документи */}
+        {step.requiredDocuments.length > 0 && (
+          <div>
+            <SectionTitle>Необходими документи</SectionTitle>
+            <ul className="space-y-2 mt-3">
+              {step.requiredDocuments.map((d, i) => {
+                const link = DOCUMENT_LINKS[d]
+                return (
+                  <li key={i} className="rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3">
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        {d}
+                      </span>
+                      {link?.hasFile && (
+                        <a
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 flex-shrink-0 text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline"
+                        >
+                          <Download className="w-3.5 h-3.5" />
+                          Изтегли
+                        </a>
+                      )}
+                    </div>
+                    {link && (
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 inline-flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 hover:underline"
+                      >
+                        {link.hasFile ? "Официален източник" : "Няма отделен образец — виж всички образци на официалния сайт"}
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </li>
+                )
+              })}
+            </ul>
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+              → Всички образци на Търговския регистър: <a href={REGISTRY_TEMPLATES_PAGE} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">portal.registryagency.bg/document-template-cr</a> — ползвай тази страница, ако файлът тук някога остарее.
+            </p>
+          </div>
+        )}
+
+        {/* 3. Как да го направиш */}
+        {step.subTasks.length > 0 && (
+          <div>
+            <SectionTitle>Как да го направиш</SectionTitle>
+            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">{step.whenToDo}</p>
+            <div className="mt-3">
+              <StepChecklist stepId={step.id} subTasks={step.subTasks} />
+            </div>
+          </div>
+        )}
+
+        {/* 4. Защо е важно */}
         <Section title="Защо е важно">{step.whyItMatters}</Section>
 
-        {/* When to do */}
-        <Section title="Кога да го направиш">{step.whenToDo}</Section>
-
-        {/* Common mistakes */}
+        {/* 5. Чести грешки */}
         {step.commonMistakes.length > 0 && (
           <div>
             <SectionTitle>Чести грешки</SectionTitle>
@@ -156,57 +231,6 @@ export default async function StepPage({ params }: Props) {
                 <li key={i} className="flex gap-2 text-sm text-slate-700 dark:text-slate-300">
                   <XCircle className="w-4 h-4 mt-0.5 flex-shrink-0 text-red-500" />
                   {m}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Required documents — clickable links */}
-        {step.requiredDocuments.length > 0 && (
-          <div>
-            <SectionTitle>Необходими документи</SectionTitle>
-            <ul className="space-y-2 mt-3">
-              {step.requiredDocuments.map((d, i) => (
-                <li key={i}>
-                  <a
-                    href="https://portal.registryagency.bg/document-template-cr"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-3 rounded-lg border border-slate-200 dark:border-slate-700 px-4 py-3 hover:bg-blue-50 dark:hover:bg-blue-950/30 hover:border-blue-300 dark:hover:border-blue-700 transition-colors group"
-                  >
-                    <FileText className="w-4 h-4 text-blue-500 group-hover:text-blue-600" />
-                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300 group-hover:text-blue-700 dark:group-hover:text-blue-300">
-                      {d}
-                    </span>
-                    <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-500 ml-auto flex-shrink-0" />
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-              → Всички образци: <a href="https://portal.registryagency.bg/document-template-cr" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">portal.registryagency.bg/document-template-cr</a>
-            </p>
-          </div>
-        )}
-
-        {/* Useful links */}
-        {step.usefulLinks.length > 0 && (
-          <div>
-            <SectionTitle>Полезни линкове</SectionTitle>
-            <ul className="space-y-2 mt-2">
-              {step.usefulLinks.map((link, i) => (
-                <li key={i}>
-                  <a
-                    href={link.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
-                  >
-                    {link.isOfficial && <Landmark className="w-3.5 h-3.5" />}
-                    {link.label}
-                    <ExternalLink className="w-3 h-3" />
-                  </a>
                 </li>
               ))}
             </ul>
@@ -232,9 +256,53 @@ export default async function StepPage({ params }: Props) {
           </div>
         )}
 
-        {/* Checklist — interactive */}
-        {step.subTasks.length > 0 && (
-          <StepChecklist stepId={step.id} subTasks={step.subTasks} />
+        {/* 6. Официален източник */}
+        {step.usefulLinks.length > 0 && (
+          <div>
+            <SectionTitle>{officialLinks.length > 0 ? "Официален източник" : "Полезни връзки"}</SectionTitle>
+            {officialLinks.length > 0 && (
+              <ul className="space-y-2 mt-2">
+                {officialLinks.map((link, i) => (
+                  <li key={i}>
+                    <a
+                      href={link.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      <Landmark className="w-3.5 h-3.5" />
+                      {link.label}
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {otherLinks.length > 0 && (
+              <>
+                {officialLinks.length > 0 && (
+                  <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide mt-4 mb-1">
+                    Други връзки
+                  </p>
+                )}
+                <ul className="space-y-2 mt-2">
+                  {otherLinks.map((link, i) => (
+                    <li key={i}>
+                      <a
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        {link.label}
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
         )}
 
         {/* Complete button */}
@@ -264,14 +332,6 @@ function Section({ title, children }: { title: string; children: React.ReactNode
         {children}
       </p>
     </div>
-  )
-}
-
-function Badge({ children }: { children: React.ReactNode }) {
-  return (
-    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-      {children}
-    </span>
   )
 }
 

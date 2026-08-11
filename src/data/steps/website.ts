@@ -35,6 +35,7 @@ export const websiteSteps: Step[] = [
       { index: 1, label: "Провери дали е свободен" },
       { index: 2, label: "Регистрирай го" },
     ],
+    notRelevantFor: ["offline"],
   },
   {
     id: "website-build",
@@ -70,5 +71,6 @@ export const websiteSteps: Step[] = [
       { index: 1, label: "Напиши текст: какво правиш, за кого, как да те намерят" },
       { index: 2, label: "Публикувай и свържи домейна" },
     ],
+    notRelevantFor: ["offline"],
   },
 ]

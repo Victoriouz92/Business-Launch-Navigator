@@ -66,5 +66,6 @@ export const technicalSteps: Step[] = [
       { index: 1, label: "Добави tracking кода в сайта" },
       { index: 2, label: "Добави Google Search Console (bonus)" },
     ],
+    notRelevantFor: ["offline"],
   },
 ]

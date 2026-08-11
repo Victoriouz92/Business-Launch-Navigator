@@ -1,6 +1,6 @@
 "use client"
 
-import { CATEGORIES, STEPS, getStepsForCategory } from "@/data/roadmap"
+import { CATEGORIES, STEPS, isStepRelevant } from "@/data/roadmap"
 import { RoadmapView } from "@/components/RoadmapView"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { Footer } from "@/components/Footer"
@@ -8,46 +8,42 @@ import { BetaNotice } from "@/components/BetaNotice"
 import { Logo } from "@/components/Logo"
 import { UserMenu } from "@/components/UserMenu"
 import { useProgress } from "@/hooks/useProgress"
+import { useBusinessType } from "@/hooks/useBusinessType"
 import Link from "next/link"
 import { Receipt, MessageCircle, Heart } from "lucide-react"
 
+const BUSINESS_TYPE_LABELS: Record<string, string> = {
+  online: "онлайн бизнес",
+  offline: "офлайн бизнес",
+  mixed: "смесен бизнес",
+}
+
 export default function DashboardPage() {
   const { completedStepIds, toggleStep, loaded } = useProgress()
-  const totalSteps = STEPS.length
+  const { businessType } = useBusinessType()
 
-  const totalCostEUR = STEPS.reduce(
-    (sum, s) => sum + s.estimatedCostBGN / 1.95583, 0
-  )
-  const mandatoryCostEUR = STEPS
+  const relevantSteps = STEPS.filter((s) => isStepRelevant(s, businessType))
+  const notRelevantSteps = STEPS.filter((s) => !isStepRelevant(s, businessType))
+  const totalSteps = relevantSteps.length
+
+  const mandatoryCostEUR = relevantSteps
     .filter((s) => s.priorityLevel === "legally_required")
     .reduce((sum, s) => sum + s.estimatedCostBGN / 1.95583, 0)
 
-  const remainingCostEUR = STEPS
+  const remainingCostEUR = relevantSteps
     .filter((s) => !completedStepIds.includes(s.id))
     .reduce((sum, s) => sum + s.estimatedCostBGN / 1.95583, 0)
 
-  // Find next recommended step: first unlocked incomplete step in sequential order
-  const nextStep = (() => {
-    const unlocked: typeof STEPS = []
-    for (const cat of CATEGORIES.sort((a, b) => a.order - b.order)) {
-      const catSteps = getStepsForCategory(cat.id)
-      for (let i = 0; i < catSteps.length; i++) {
-        const step = catSteps[i]
-        const isCompleted = completedStepIds.includes(step.id)
-        const isUnlocked = i === 0 || completedStepIds.includes(catSteps[i - 1].id)
-        if (isUnlocked && !isCompleted) {
-          unlocked.push(step)
-        }
-      }
-    }
-    // Pick by lowest category order, then lowest step order
-    return unlocked.sort((a, b) => {
+  // Find next recommended step: first incomplete step, by category order then step order
+  // (all steps are unlocked — this is just a suggestion, not an enforced sequence)
+  const nextStep = relevantSteps
+    .filter((s) => !completedStepIds.includes(s.id))
+    .sort((a, b) => {
       const catA = CATEGORIES.find((c) => c.id === a.categoryId)?.order ?? 0
       const catB = CATEGORIES.find((c) => c.id === b.categoryId)?.order ?? 0
       if (catA !== catB) return catA - catB
       return a.order - b.order
     })[0]
-  })()
 
   const progressPercent = totalSteps > 0
     ? Math.round((completedStepIds.length / totalSteps) * 100)
@@ -72,30 +68,32 @@ export default function DashboardPage() {
               Business Launch Navigator
             </h1>
           </div>
-          <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
-            <span>{completedStepIds.length} / {totalSteps} стъпки</span>
+          <div className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
+            <span className="hidden sm:inline mr-2">{completedStepIds.length} / {totalSteps} стъпки</span>
             <Link
               href="/expenses"
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              aria-label="Разходи"
+              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <Receipt className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <span className="text-[10px] leading-none">Разходи</span>
             </Link>
             <Link
               href="/contact"
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              aria-label="Свържете се с нас"
+              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <MessageCircle className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <span className="text-[10px] leading-none">Контакт</span>
             </Link>
             <Link
               href="/support"
-              className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-              aria-label="Подкрепете проекта"
+              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <Heart className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <span className="text-[10px] leading-none">Подкрепа</span>
             </Link>
-            <ThemeToggle />
+            <div className="ml-1">
+              <ThemeToggle />
+            </div>
             <UserMenu />
           </div>
         </div>
@@ -153,11 +151,39 @@ export default function DashboardPage() {
         {/* Roadmap */}
         <RoadmapView
           categories={CATEGORIES}
-          steps={STEPS}
+          steps={relevantSteps}
           completedStepIds={completedStepIds}
           onToggleStep={toggleStep}
           nextStepId={nextStep?.id}
         />
+
+        {/* Not relevant for this business type */}
+        {notRelevantSteps.length > 0 && (
+          <div className="mt-8 opacity-70">
+            <h2 className="text-sm font-semibold text-slate-500 dark:text-slate-400 mb-3">
+              Нямаш нужда от това
+            </h2>
+            <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden">
+              <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+                {notRelevantSteps.map((step) => (
+                  <li key={step.id}>
+                    <Link
+                      href={`/step/${step.id}`}
+                      className="flex items-center justify-between gap-3 px-5 py-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                    >
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {step.title}
+                      </span>
+                      <span className="text-xs text-slate-400 dark:text-slate-500 flex-shrink-0">
+                        Не се отнася за {BUSINESS_TYPE_LABELS[businessType ?? ""] ?? "избрания тип бизнес"}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
       </main>
 
       <Footer />

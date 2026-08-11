@@ -33,28 +33,29 @@ export default function Home() {
         </div>
 
         {/* CTA */}
-        <div className="flex flex-col sm:flex-row gap-3 mt-6">
-          <a
-            href="/register"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700 transition-colors"
+        <div className="flex flex-col items-center gap-3 mt-6">
+          <Link
+            href="/onboarding"
+            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-3.5 text-white font-semibold text-lg hover:bg-blue-700 transition-colors"
           >
-            Започни безплатно
-          </a>
-          <a
-            href="/login"
-            className="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 px-6 py-3 text-slate-700 dark:text-slate-300 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-          >
-            Вход
-          </a>
+            Старт
+          </Link>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Влизането е по избор — само за да запазиш прогреса на всички устройства.
+          </p>
         </div>
 
         {/* Trust note */}
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
           Напълно безплатно през бета фазата • Без кредитна карта • Фокус върху ЕООД в България
         </p>
 
         {/* Secondary links */}
         <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <Link href="/login" className="hover:text-slate-700 dark:hover:text-slate-200 hover:underline">
+            Вход
+          </Link>
+          <span aria-hidden="true">·</span>
           <Link href="/support" className="hover:text-slate-700 dark:hover:text-slate-200 hover:underline">
             Подкрепете проекта
           </Link>

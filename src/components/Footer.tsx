@@ -12,7 +12,7 @@ export function Footer() {
 
         <div className="space-y-3 pt-2">
           <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-            Developed by VV Labs EOOD
+            Developed by VV Labs
           </p>
           <div className="text-xs text-slate-500 dark:text-slate-500 space-y-1">
             <p className="font-medium">Източници и актуалност:</p>

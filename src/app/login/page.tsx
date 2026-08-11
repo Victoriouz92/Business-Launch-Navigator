@@ -102,13 +102,6 @@ export default function LoginPage() {
             Регистрирай се
           </Link>
         </p>
-
-        {/* Dev mode hint */}
-        <div className="mt-8 rounded-lg bg-slate-100 dark:bg-slate-800 p-3 text-center">
-          <p className="text-xs text-slate-500 dark:text-slate-400">
-            🛠️ Dev mode: demo@example.com / demo1234
-          </p>
-        </div>
       </div>
     </div>
   )

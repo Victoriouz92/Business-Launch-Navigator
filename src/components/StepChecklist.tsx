@@ -14,9 +14,12 @@ interface Props {
   subTasks: SubTask[]
 }
 
+const STORAGE_KEY = "bln-checklist"
+
 /**
- * Interactive checklist that persists checked items to the database,
- * scoped to the signed-in user's project.
+ * Interactive checklist. Signed-in users get it synced to the database;
+ * everyone else gets a localStorage-only version (key: bln-checklist ->
+ * { [stepId]: number[] }), so the checklist works without an account.
  */
 export function StepChecklist({ stepId, subTasks }: Props) {
   const { status } = useSession()
@@ -24,7 +27,20 @@ export function StepChecklist({ stepId, subTasks }: Props) {
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    if (status !== "authenticated") return
+    if (status === "loading") return
+
+    if (status !== "authenticated") {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY)
+        const all = stored ? JSON.parse(stored) : {}
+        setChecked(all[stepId] ?? [])
+      } catch {
+        // Ignore parse errors
+      }
+      setLoaded(true)
+      return
+    }
+
     let cancelled = false
 
     fetch(`/api/progress/subtask?stepId=${encodeURIComponent(stepId)}`)
@@ -41,11 +57,26 @@ export function StepChecklist({ stepId, subTasks }: Props) {
     }
   }, [stepId, status])
 
+  function persistLocal(next: number[]) {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      const all = stored ? JSON.parse(stored) : {}
+      all[stepId] = next
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(all))
+    } catch {
+      // Ignore write errors
+    }
+  }
+
   function toggle(index: number) {
     const willBeChecked = !checked.includes(index)
-    setChecked((prev) =>
-      willBeChecked ? [...prev, index] : prev.filter((i) => i !== index)
-    )
+    const next = willBeChecked ? [...checked, index] : checked.filter((i) => i !== index)
+    setChecked(next)
+
+    if (status !== "authenticated") {
+      persistLocal(next)
+      return
+    }
 
     fetch("/api/progress/subtask", {
       method: "POST",

@@ -67,5 +67,6 @@ export const marketingSteps: Step[] = [
       { index: 1, label: "Добави meta title и description на всяка страница" },
       { index: 2, label: "Провери скоростта на сайта (PageSpeed Insights)" },
     ],
+    notRelevantFor: ["offline"],
   },
 ]

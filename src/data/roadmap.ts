@@ -8,6 +8,8 @@ export type PriorityLevel =
 
 export type Difficulty = 1 | 2 | 3 | 4 | 5
 
+export type BusinessType = "online" | "offline" | "mixed"
+
 export type CategoryId =
   | "IDEA"
   | "PLANNING"
@@ -54,6 +56,8 @@ export interface Step {
   usefulLinks: UsefulLink[]
   faq: FaqItem[]
   subTasks: SubTask[]
+  /** Business types this step does NOT apply to. Undefined = relevant to everyone. */
+  notRelevantFor?: BusinessType[]
 }
 
 export interface Category {
@@ -109,4 +113,10 @@ export function getStepsForCategory(categoryId: CategoryId): Step[] {
 // Helper: get a single step by ID
 export function getStepById(stepId: string): Step | undefined {
   return STEPS.find((s) => s.id === stepId)
+}
+
+// Helper: is this step relevant for the given business type?
+export function isStepRelevant(step: Step, businessType: BusinessType | null): boolean {
+  if (!businessType || !step.notRelevantFor) return true
+  return !step.notRelevantFor.includes(businessType)
 }

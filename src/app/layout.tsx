@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { AuthProvider } from "@/components/AuthProvider";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -14,7 +15,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://navigator-wheat.vercel.app"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Business Launch Navigator — Пътеводител за бизнес",
     template: "%s",

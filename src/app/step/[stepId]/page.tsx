@@ -21,15 +21,28 @@ interface Props {
  * personal documents, or obtained as the output of an earlier step).
  */
 const REGISTRY_TEMPLATES_PAGE = "https://portal.registryagency.bg/document-template-cr"
-const DOCUMENT_LINKS: Record<string, { url: string; hasFile: boolean }> = {
+const DOCUMENT_LINKS: Record<
+  string,
+  { url: string; hasFile: boolean; sourceLabel?: string; sourceUrl?: string }
+> = {
   "Учредителен акт на ЕООД": { url: "https://portal.registryagency.bg/nested-page-file-download/938-1734089039", hasFile: true },
   "Учредителен акт": { url: "https://portal.registryagency.bg/nested-page-file-download/938-1734089039", hasFile: true },
   "Учредителен акт (копие)": { url: "https://portal.registryagency.bg/nested-page-file-download/938-1734089039", hasFile: true },
   "Декларация по чл. 13, ал. 4 от ТЗ": { url: "https://portal.registryagency.bg/nested-page-file-download/524-1600089858", hasFile: true },
   "Декларация по чл. 141, ал. 8 от ТЗ": { url: "https://portal.registryagency.bg/nested-page-file-download/856-1612775228", hasFile: true },
   "Заявление А4 (попълнено)": { url: "https://portal.registryagency.bg/nested-page-file-download/489-1711467727", hasFile: true },
-  "Протокол-решение на едноличния собственик": { url: REGISTRY_TEMPLATES_PAGE, hasFile: false },
-  "Протокол-решение": { url: REGISTRY_TEMPLATES_PAGE, hasFile: false },
+  "Протокол-решение на едноличния собственик": {
+    url: "/documents/protokol-reshenie-ednolichen-sobstvenik.docx",
+    hasFile: true,
+    sourceLabel: "Готов образец — не е официален държавен формуляр, виж и всички образци на официалния сайт",
+    sourceUrl: REGISTRY_TEMPLATES_PAGE,
+  },
+  "Протокол-решение": {
+    url: "/documents/protokol-reshenie-ednolichen-sobstvenik.docx",
+    hasFile: true,
+    sourceLabel: "Готов образец — не е официален държавен формуляр, виж и всички образци на официалния сайт",
+    sourceUrl: REGISTRY_TEMPLATES_PAGE,
+  },
   "Декларации по ТЗ": { url: REGISTRY_TEMPLATES_PAGE, hasFile: false },
 }
 
@@ -189,12 +202,12 @@ export default async function StepPage({ params }: Props) {
                     </div>
                     {link && (
                       <a
-                        href={link.url}
+                        href={link.sourceUrl ?? link.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="mt-1 inline-flex items-center gap-1 text-xs text-slate-400 dark:text-slate-500 hover:text-blue-500 dark:hover:text-blue-400 hover:underline"
                       >
-                        {link.hasFile ? "Официален източник" : "Няма отделен образец — виж всички образци на официалния сайт"}
+                        {link.sourceLabel ?? (link.hasFile ? "Официален източник" : "Няма отделен образец — виж всички образци на официалния сайт")}
                         <ExternalLink className="w-3 h-3" />
                       </a>
                     )}

@@ -15,15 +15,12 @@ model User {
   verificationExpiry DateTime?
   resetToken         String?
   resetExpiry        DateTime?
-  hasPaid            Boolean   @default(false)
   failedLoginCount   Int       @default(0)
   lockedUntil        DateTime?
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 
-  projects     Project[]
-  bookmarks    Bookmark[]
-  achievements UserAchievement[]
+  projects Project[]
 
   @@index([email])
 }
@@ -69,28 +66,4 @@ model SubTaskProgress {
   stepProgress StepProgress @relation(fields: [stepProgressId], references: [id], onDelete: Cascade)
 
   @@unique([stepProgressId, subTaskIndex])
-}
-
-model Bookmark {
-  id        String   @id @default(cuid())
-  userId    String
-  stepId    String
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, stepId])
-  @@index([userId])
-}
-
-model UserAchievement {
-  id            String   @id @default(cuid())
-  userId        String
-  achievementId String
-  earnedAt      DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, achievementId])
-  @@index([userId])
 }

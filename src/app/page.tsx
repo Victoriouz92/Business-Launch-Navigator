@@ -1,10 +1,19 @@
+import Link from "next/link"
+import { ClipboardList, Wallet, Scale, type LucideIcon } from "lucide-react"
+import { BetaNotice } from "@/components/BetaNotice"
+import { Logo } from "@/components/Logo"
+
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
       <main className="flex flex-col items-center gap-8 px-6 py-16 text-center max-w-2xl">
+        <div className="w-full max-w-md">
+          <BetaNotice />
+        </div>
+
         {/* Logo / Brand */}
         <div className="flex items-center gap-3">
-          <span className="text-4xl">🚀</span>
+          <Logo size="lg" />
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Business Launch Navigator
           </h1>
@@ -18,9 +27,9 @@ export default function Home() {
 
         {/* Key Features */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full mt-4">
-          <FeatureCard emoji="📋" title="Пълен пътеводител" description="20+ стъпки за регистрация на ЕООД" />
-          <FeatureCard emoji="💰" title="Минимални разходи" description="Безплатни алтернативи за всяко нещо" />
-          <FeatureCard emoji="⚖️" title="Официални източници" description="НАП, Търговски регистър, НОИ" />
+          <FeatureCard icon={ClipboardList} title="Пълен пътеводител" description="20+ стъпки за регистрация на ЕООД" />
+          <FeatureCard icon={Wallet} title="Минимални разходи" description="Безплатни алтернативи за всяко нещо" />
+          <FeatureCard icon={Scale} title="Официални източници" description="НАП, Търговски регистър, НОИ" />
         </div>
 
         {/* CTA */}
@@ -41,17 +50,30 @@ export default function Home() {
 
         {/* Trust note */}
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-4">
-          Безплатен план • Без кредитна карта • Фокус върху ЕООД в България
+          Напълно безплатно през бета фазата • Без кредитна карта • Фокус върху ЕООД в България
         </p>
+
+        {/* Secondary links */}
+        <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+          <Link href="/support" className="hover:text-slate-700 dark:hover:text-slate-200 hover:underline">
+            Подкрепете проекта
+          </Link>
+          <span aria-hidden="true">·</span>
+          <Link href="/contact" className="hover:text-slate-700 dark:hover:text-slate-200 hover:underline">
+            Свържете се с нас
+          </Link>
+        </div>
       </main>
     </div>
   )
 }
 
-function FeatureCard({ emoji, title, description }: { emoji: string; title: string; description: string }) {
+function FeatureCard({ icon: Icon, title, description }: { icon: LucideIcon; title: string; description: string }) {
   return (
     <div className="flex flex-col items-center gap-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 p-5 shadow-sm">
-      <span className="text-2xl">{emoji}</span>
+      <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
+        <Icon className="w-5 h-5" />
+      </span>
       <h3 className="font-semibold text-slate-900 dark:text-white text-sm">{title}</h3>
       <p className="text-xs text-slate-500 dark:text-slate-400">{description}</p>
     </div>

@@ -1,0 +1,182 @@
+"use client"
+
+import { Category, Step, getStepsForCategory } from "@/data/roadmap"
+import { Check, Lock } from "lucide-react"
+import Link from "next/link"
+import { CategoryIconBadge } from "@/lib/categoryIcons"
+
+interface Props {
+  categories: Category[]
+  steps: Step[]
+  completedStepIds: string[]
+  onToggleStep?: (stepId: string) => void
+  nextStepId?: string
+}
+
+export function RoadmapView({ categories, steps, completedStepIds, onToggleStep, nextStepId }: Props) {
+  return (
+    <div className="space-y-6">
+      {categories.map((cat) => {
+        const catSteps = getStepsForCategory(cat.id)
+        const completed = catSteps.filter((s) =>
+          completedStepIds.includes(s.id)
+        ).length
+
+        return (
+          <div
+            key={cat.id}
+            className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 overflow-hidden"
+          >
+            {/* Category Header */}
+            <div className="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <CategoryIconBadge categoryId={cat.id} />
+                <h2 className="font-semibold text-slate-900 dark:text-white">
+                  {cat.label}
+                </h2>
+              </div>
+              <span className="text-sm text-slate-500 dark:text-slate-400">
+                {completed} / {catSteps.length}
+              </span>
+            </div>
+
+            {/* Steps List */}
+            <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+              {catSteps.map((step, idx) => {
+                const isCompleted = completedStepIds.includes(step.id)
+                // First step of each category is unlocked,
+                // subsequent steps unlock after previous is completed
+                const isUnlocked =
+                  idx === 0 ||
+                  completedStepIds.includes(catSteps[idx - 1]?.id ?? "")
+
+                return (
+                  <li key={step.id}>
+                    <StepRow
+                      step={step}
+                      isCompleted={isCompleted}
+                      isUnlocked={isUnlocked}
+                      categoryId={cat.id}
+                      isNextStep={step.id === nextStepId}
+                    />
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function StepRow({
+  step,
+  isCompleted,
+  isUnlocked,
+  categoryId,
+  isNextStep,
+}: {
+  step: Step
+  isCompleted: boolean
+  isUnlocked: boolean
+  categoryId: string
+  isNextStep: boolean
+}) {
+  const priorityColors: Record<string, string> = {
+    legally_required: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
+    strongly_recommended: "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+    optional: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+    can_be_postponed: "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
+  }
+
+  const priorityLabels: Record<string, string> = {
+    legally_required: "Задължително",
+    strongly_recommended: "Препоръчително",
+    optional: "По избор",
+    can_be_postponed: "Може по-късно",
+  }
+
+  const isMandatory = step.priorityLevel === "legally_required"
+
+  const content = (
+    <div
+      className={`flex items-center gap-3 px-5 py-3 border-l-4 ${
+        isUnlocked && isMandatory
+          ? "border-red-400 dark:border-red-600"
+          : "border-transparent"
+      }`}
+    >
+      {/* Status icon */}
+      <div className="flex-shrink-0 w-6 h-6 flex items-center justify-center">
+        {isCompleted ? (
+          <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center">
+            <Check className="w-4 h-4 text-white" />
+          </div>
+        ) : isUnlocked ? (
+          <div
+            className={`w-6 h-6 rounded-full border-2 ${
+              isMandatory ? "border-red-400 dark:border-red-600" : "border-blue-400"
+            }`}
+          />
+        ) : (
+          <Lock className="w-4 h-4 text-slate-300 dark:text-slate-600" />
+        )}
+      </div>
+
+      {/* Step info */}
+      <div className="flex-1 min-w-0">
+        <p
+          className={`text-sm font-medium truncate ${
+            isUnlocked
+              ? "text-slate-900 dark:text-white"
+              : "text-slate-400 dark:text-slate-600"
+          }`}
+        >
+          {step.title}
+        </p>
+      </div>
+
+      {/* Priority badge */}
+      {isUnlocked && (
+        <span
+          className={`text-xs px-2 py-0.5 rounded-full font-medium ${priorityColors[step.priorityLevel]}`}
+        >
+          {priorityLabels[step.priorityLevel]}
+        </span>
+      )}
+
+      {/* Cost */}
+      {isUnlocked && step.estimatedCostBGN > 0 && (
+        <span className="text-xs text-slate-500 dark:text-slate-400">
+          €{(step.estimatedCostBGN / 1.95583).toFixed(0)}
+        </span>
+      )}
+
+      {/* Edit link for completed steps */}
+      {isCompleted && (
+        <Link
+          href={`/step/${step.id}`}
+          className="text-xs text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 hover:underline focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded"
+          aria-label={`Редактирай ${step.title}`}
+        >
+          Редактирай
+        </Link>
+      )}
+    </div>
+  )
+
+  if (isUnlocked && !isCompleted) {
+    return (
+      <Link
+        href={`/step/${step.id}`}
+        className="block hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+        aria-current={isNextStep ? "step" : undefined}
+      >
+        {content}
+      </Link>
+    )
+  }
+
+  return <div className={!isUnlocked ? "opacity-50" : ""}>{content}</div>
+}

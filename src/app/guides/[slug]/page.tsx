@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { getArticleBySlug, getAllArticleSlugs } from "@/data/knowledge"
 import { ArticleBlocks } from "@/components/ArticleBlocks"
+import { ArticleHero } from "@/components/ArticleHero"
 import { Logo } from "@/components/Logo"
 import { Footer } from "@/components/Footer"
 
@@ -80,7 +81,9 @@ export default async function ArticlePage({ params }: Props) {
         </nav>
 
         <article>
-          <h1 className="text-2xl font-bold text-slate-900 dark:text-white leading-tight">
+          <ArticleHero icon={article.heroIcon} tone={article.heroTone} />
+
+          <h1 className="mt-6 text-2xl font-bold text-slate-900 dark:text-white leading-tight">
             {article.title}
           </h1>
           <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">

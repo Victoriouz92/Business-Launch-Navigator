@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { ArrowLeft, Calendar } from "lucide-react"
 import { ARTICLES } from "@/data/knowledge"
 import { Logo } from "@/components/Logo"
+import { ArticleHero } from "@/components/ArticleHero"
 import { Footer } from "@/components/Footer"
 
 export const metadata: Metadata = {
@@ -43,15 +44,18 @@ export default function GuidesPage() {
             <Link
               key={article.slug}
               href={`/guides/${article.slug}`}
-              className="block rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5 hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
+              className="flex gap-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-4 hover:border-blue-300 dark:hover:border-blue-700 transition-colors"
             >
-              <h2 className="font-semibold text-slate-900 dark:text-white">{article.title}</h2>
-              <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
-                {article.metaDescription}
-              </p>
-              <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
-                <Calendar className="w-3.5 h-3.5" />
-                <time dateTime={article.publishedDate}>{article.publishedDate}</time>
+              <ArticleHero icon={article.heroIcon} tone={article.heroTone} compact />
+              <div className="min-w-0 flex-1">
+                <h2 className="font-semibold text-slate-900 dark:text-white">{article.title}</h2>
+                <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                  {article.metaDescription}
+                </p>
+                <div className="mt-3 flex items-center gap-1.5 text-xs text-slate-400 dark:text-slate-500">
+                  <Calendar className="w-3.5 h-3.5" />
+                  <time dateTime={article.publishedDate}>{article.publishedDate}</time>
+                </div>
               </div>
             </Link>
           ))}

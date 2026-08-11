@@ -6,6 +6,8 @@ export const kakSeRegistriraEood: Article = {
   metaDescription:
     "Открий как бързо и лесно да регистрираш ЕООД. Подробни стъпки, необходими документи, реални разходи в евро (€) и практически съвети за успех.",
   publishedDate: "2026-08-11",
+  heroIcon: "registration",
+  heroTone: "blue",
   blocks: [
     { type: "heading", icon: "trending-up", text: "Защо ЕООД е най-популярният избор за нов бизнес?" },
     {

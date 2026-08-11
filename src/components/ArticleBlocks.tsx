@@ -7,6 +7,20 @@ import {
   BookOpen,
   Info,
   ArrowRight,
+  Scale,
+  PiggyBank,
+  FileText,
+  BarChart3,
+  Landmark,
+  CreditCard,
+  Clock,
+  Banknote,
+  Tag,
+  Globe,
+  ShoppingCart,
+  Search,
+  Users,
+  HelpCircle,
   type LucideIcon,
 } from "lucide-react"
 import type { ArticleBlock } from "@/data/knowledge"
@@ -16,6 +30,20 @@ const HEADING_ICONS: Record<string, LucideIcon> = {
   "list-checks": ListChecks,
   lightbulb: Lightbulb,
   wrench: Wrench,
+  scale: Scale,
+  "piggy-bank": PiggyBank,
+  "file-text": FileText,
+  "bar-chart": BarChart3,
+  landmark: Landmark,
+  "credit-card": CreditCard,
+  clock: Clock,
+  banknote: Banknote,
+  tag: Tag,
+  globe: Globe,
+  "shopping-cart": ShoppingCart,
+  search: Search,
+  users: Users,
+  question: HelpCircle,
 }
 
 /** Renders **bold** segments inside inline text as <strong>. */
@@ -150,16 +178,32 @@ export function ArticleBlocks({ blocks }: { blocks: ArticleBlock[] }) {
               </div>
             )
 
-          case "callout":
+          case "callout": {
+            const CALLOUT_STYLES: Record<string, { box: string; icon: string; text: string }> = {
+              info: {
+                box: "border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/30",
+                icon: "text-blue-600 dark:text-blue-400",
+                text: "text-blue-800 dark:text-blue-300",
+              },
+              tip: {
+                box: "border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/30",
+                icon: "text-green-600 dark:text-green-400",
+                text: "text-green-800 dark:text-green-300",
+              },
+              warning: {
+                box: "border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30",
+                icon: "text-amber-600 dark:text-amber-400",
+                text: "text-amber-800 dark:text-amber-300",
+              },
+            }
+            const style = CALLOUT_STYLES[block.tone ?? "info"]
             return (
-              <div
-                key={i}
-                className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/30 p-4"
-              >
-                <Info className="w-4 h-4 mt-0.5 flex-shrink-0 text-amber-600 dark:text-amber-400" />
-                <p className="text-sm text-amber-800 dark:text-amber-300">{block.text}</p>
+              <div key={i} className={`flex items-start gap-2 rounded-lg border p-4 ${style.box}`}>
+                <Info className={`w-4 h-4 mt-0.5 flex-shrink-0 ${style.icon}`} />
+                <p className={`text-sm ${style.text}`}>{block.text}</p>
               </div>
             )
+          }
 
           case "cta":
             return (

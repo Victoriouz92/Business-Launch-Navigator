@@ -8,6 +8,7 @@ import { db } from "@/lib/db"
  * Uses email/password credentials provider with SQLite DB.
  */
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       name: "Email",

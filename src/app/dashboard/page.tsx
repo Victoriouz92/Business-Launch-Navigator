@@ -10,7 +10,7 @@ import { UserMenu } from "@/components/UserMenu"
 import { useProgress } from "@/hooks/useProgress"
 import { useBusinessType } from "@/hooks/useBusinessType"
 import Link from "next/link"
-import { Receipt, MessageCircle, Heart } from "lucide-react"
+import { Receipt, MessageCircle, Heart, BookOpen } from "lucide-react"
 
 const BUSINESS_TYPE_LABELS: Record<string, string> = {
   online: "онлайн бизнес",
@@ -62,12 +62,12 @@ export default function DashboardPage() {
       {/* Header */}
       <header className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
+          <Link href="/dashboard" className="flex items-center gap-2.5 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg">
             <Logo size="sm" />
             <h1 className="text-lg font-bold text-slate-900 dark:text-white">
               Business Launch Navigator
             </h1>
-          </div>
+          </Link>
           <div className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
             <span className="hidden sm:inline mr-2">{completedStepIds.length} / {totalSteps} стъпки</span>
             <Link
@@ -83,6 +83,13 @@ export default function DashboardPage() {
             >
               <MessageCircle className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span className="text-[10px] leading-none">Контакт</span>
+            </Link>
+            <Link
+              href="/guides"
+              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+            >
+              <BookOpen className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+              <span className="text-[10px] leading-none">Наръчници</span>
             </Link>
             <Link
               href="/support"

@@ -14,8 +14,17 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Business Launch Navigator — Пътеводител за бизнес",
+  metadataBase: new URL("https://navigator-wheat.vercel.app"),
+  title: {
+    default: "Business Launch Navigator — Пътеводител за бизнес",
+    template: "%s",
+  },
   description: "Интерактивна платформа за стартиране на бизнес в България. Стъпка по стъпка — от идея до първия клиент.",
+  openGraph: {
+    siteName: "Business Launch Navigator",
+    locale: "bg_BG",
+    type: "website",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

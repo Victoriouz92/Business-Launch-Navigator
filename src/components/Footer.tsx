@@ -11,9 +11,17 @@ export function Footer() {
         </div>
 
         <div className="space-y-3 pt-2">
-          <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-            Developed by VV Labs
-          </p>
+          <div className="flex items-center justify-between flex-wrap gap-2">
+            <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
+              Developed by VV Labs
+            </p>
+            <Link
+              href="/guides"
+              className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline"
+            >
+              Наръчници →
+            </Link>
+          </div>
           <div className="text-xs text-slate-500 dark:text-slate-500 space-y-1">
             <p className="font-medium">Източници и актуалност:</p>
             <ul className="list-disc list-inside space-y-0.5">

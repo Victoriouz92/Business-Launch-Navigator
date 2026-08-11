@@ -56,6 +56,10 @@ export default function Home() {
             Вход
           </Link>
           <span aria-hidden="true">·</span>
+          <Link href="/guides" className="hover:text-slate-700 dark:hover:text-slate-200 hover:underline">
+            Наръчници
+          </Link>
+          <span aria-hidden="true">·</span>
           <Link href="/support" className="hover:text-slate-700 dark:hover:text-slate-200 hover:underline">
             Подкрепете проекта
           </Link>

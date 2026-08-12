@@ -1,7 +1,9 @@
 import { getStepById, CATEGORIES, STEPS } from "@/data/roadmap"
+import { getArticleBySlug } from "@/data/knowledge"
+import { bgnToEur } from "@/lib/currency"
 import { notFound } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, ExternalLink, AlertTriangle, FileText, Landmark, XCircle, Wallet, Lightbulb, Download } from "lucide-react"
+import { ArrowLeft, ExternalLink, AlertTriangle, FileText, Landmark, XCircle, Wallet, Lightbulb, Download, BookOpen } from "lucide-react"
 import { InsuranceCalculator } from "@/components/InsuranceCalculator"
 import { VatChecker } from "@/components/VatChecker"
 import { StepCompleteButton } from "@/components/StepCompleteButton"
@@ -120,7 +122,7 @@ export default async function StepPage({ params }: Props) {
           <AccentCard
             color="emerald"
             label="Цена"
-            value={step.estimatedCostBGN > 0 ? `€${(step.estimatedCostBGN / 1.95583).toFixed(0)}` : "Безплатно"}
+            value={step.estimatedCostBGN > 0 ? `€${bgnToEur(step.estimatedCostBGN).toFixed(0)}` : "Безплатно"}
           />
           <AccentCard
             color="violet"
@@ -140,7 +142,7 @@ export default async function StepPage({ params }: Props) {
               <div>
                 <p className="text-xs text-emerald-600 dark:text-emerald-400">Цена</p>
                 <p className="text-2xl font-bold text-emerald-900 dark:text-emerald-100">
-                  {step.estimatedCostBGN > 0 ? `€${(step.estimatedCostBGN / 1.95583).toFixed(0)}` : "Безплатно"}
+                  {step.estimatedCostBGN > 0 ? `€${bgnToEur(step.estimatedCostBGN).toFixed(0)}` : "Безплатно"}
                 </p>
                 {step.estimatedCostBGN > 0 && (
                   <p className="text-xs text-emerald-500 dark:text-emerald-500 mt-0.5">
@@ -315,6 +317,30 @@ export default async function StepPage({ params }: Props) {
                 </ul>
               </>
             )}
+          </div>
+        )}
+
+        {/* Свързани наръчници */}
+        {step.relatedArticles && step.relatedArticles.length > 0 && (
+          <div>
+            <SectionTitle>Свързани наръчници</SectionTitle>
+            <ul className="space-y-2 mt-2">
+              {step.relatedArticles.map((slug) => {
+                const article = getArticleBySlug(slug)
+                if (!article) return null
+                return (
+                  <li key={slug}>
+                    <Link
+                      href={`/guides/${slug}`}
+                      className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                    >
+                      <BookOpen className="w-3.5 h-3.5 flex-shrink-0" />
+                      {article.title}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
           </div>
         )}
 

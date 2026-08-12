@@ -1,11 +1,11 @@
-import { ARTICLE_ICONS, ARTICLE_TONES, type ArticleTone } from "@/lib/articleIcons"
+import { ARTICLE_ICONS, ARTICLE_TONES, type ArticleIconKey, type ArticleTone } from "@/lib/articleIcons"
 
 export function ArticleHero({
   icon,
   tone = "blue",
   compact = false,
 }: {
-  icon: string
+  icon: ArticleIconKey
   tone?: ArticleTone
   compact?: boolean
 }) {

@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Logo } from "@/components/Logo"
 import { useBusinessType } from "@/hooks/useBusinessType"
+import { useBudget } from "@/hooks/useBudget"
 import type { BusinessType } from "@/data/roadmap"
 
 const BUSINESS_TYPE_OPTIONS: { value: BusinessType; label: string; description: string }[] = [
@@ -15,8 +16,10 @@ const BUSINESS_TYPE_OPTIONS: { value: BusinessType; label: string; description: 
 export default function OnboardingPage() {
   const router = useRouter()
   const { setBusinessType } = useBusinessType()
+  const { setBudget } = useBudget()
   const [type, setType] = useState<BusinessType | null>(null)
   const [vatExpect, setVatExpect] = useState<"yes" | "no" | "unsure" | null>(null)
+  const [budgetInput, setBudgetInput] = useState<string>("")
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -28,6 +31,8 @@ export default function OnboardingPage() {
     } catch {
       // Ignore write errors
     }
+    const budgetNum = parseFloat(budgetInput)
+    if (!isNaN(budgetNum) && budgetNum >= 0) setBudget(budgetNum)
     router.push("/dashboard")
   }
 
@@ -106,6 +111,28 @@ export default function OnboardingPage() {
                 </button>
               ))}
             </div>
+          </fieldset>
+
+          <fieldset>
+            <legend className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+              Какъв бюджет си предвидил за стартиране на бизнеса? <span className="text-slate-400 font-normal">(по избор)</span>
+            </legend>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="0"
+                step="10"
+                inputMode="decimal"
+                value={budgetInput}
+                onChange={(e) => setBudgetInput(e.target.value)}
+                placeholder="напр. 500"
+                className="flex-1 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 px-4 py-2.5 text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+              />
+              <span className="text-sm text-slate-400 dark:text-slate-500">€</span>
+            </div>
+            <p className="mt-1.5 text-xs text-slate-400 dark:text-slate-500">
+              Ще ти покажем визуално дали стига за задължителните разходи по регистрацията — можеш да го промениш по-късно.
+            </p>
           </fieldset>
 
           <button

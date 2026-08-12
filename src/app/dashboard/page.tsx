@@ -2,6 +2,7 @@
 
 import { CATEGORIES, STEPS, isStepRelevant } from "@/data/roadmap"
 import { RoadmapView } from "@/components/RoadmapView"
+import { BudgetPanel } from "@/components/BudgetPanel"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { Footer } from "@/components/Footer"
 import { BetaNotice } from "@/components/BetaNotice"
@@ -25,14 +26,6 @@ export default function DashboardPage() {
   const relevantSteps = STEPS.filter((s) => isStepRelevant(s, businessType))
   const notRelevantSteps = STEPS.filter((s) => !isStepRelevant(s, businessType))
   const totalSteps = relevantSteps.length
-
-  const mandatoryCostEUR = relevantSteps
-    .filter((s) => s.priorityLevel === "legally_required")
-    .reduce((sum, s) => sum + s.estimatedCostBGN / 1.95583, 0)
-
-  const remainingCostEUR = relevantSteps
-    .filter((s) => !completedStepIds.includes(s.id))
-    .reduce((sum, s) => sum + s.estimatedCostBGN / 1.95583, 0)
 
   // Find next recommended step: first incomplete step, by category order then step order
   // (all steps are unlocked — this is just a suggestion, not an enforced sequence)
@@ -64,41 +57,45 @@ export default function DashboardPage() {
         <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/dashboard" className="flex items-center gap-2.5 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 rounded-lg">
             <Logo size="sm" />
-            <h1 className="text-lg font-bold text-slate-900 dark:text-white">
+            <h1 className="hidden sm:block text-lg font-bold text-slate-900 dark:text-white">
               Business Launch Navigator
             </h1>
           </Link>
-          <div className="flex items-center gap-1 text-sm text-slate-500 dark:text-slate-400">
-            <span className="hidden sm:inline mr-2">{completedStepIds.length} / {totalSteps} стъпки</span>
+          <div className="flex items-center gap-0.5 sm:gap-1 text-sm text-slate-500 dark:text-slate-400">
+            <span className="hidden md:inline mr-2">{completedStepIds.length} / {totalSteps} стъпки</span>
             <Link
               href="/expenses"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              aria-label="Разходи"
+              className="flex flex-col items-center gap-0.5 px-1.5 sm:px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <Receipt className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              <span className="text-[10px] leading-none">Разходи</span>
+              <span className="hidden sm:inline text-[10px] leading-none">Разходи</span>
             </Link>
             <Link
               href="/contact"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              aria-label="Контакт"
+              className="flex flex-col items-center gap-0.5 px-1.5 sm:px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <MessageCircle className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              <span className="text-[10px] leading-none">Контакт</span>
+              <span className="hidden sm:inline text-[10px] leading-none">Контакт</span>
             </Link>
             <Link
               href="/guides"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              aria-label="Наръчници"
+              className="flex flex-col items-center gap-0.5 px-1.5 sm:px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <BookOpen className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              <span className="text-[10px] leading-none">Наръчници</span>
+              <span className="hidden sm:inline text-[10px] leading-none">Наръчници</span>
             </Link>
             <Link
               href="/support"
-              className="flex flex-col items-center gap-0.5 px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+              aria-label="Подкрепа"
+              className="flex flex-col items-center gap-0.5 px-1.5 sm:px-2 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
             >
               <Heart className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-              <span className="text-[10px] leading-none">Подкрепа</span>
+              <span className="hidden sm:inline text-[10px] leading-none">Подкрепа</span>
             </Link>
-            <div className="ml-1">
+            <div className="ml-0.5 sm:ml-1">
               <ThemeToggle />
             </div>
             <UserMenu />
@@ -136,17 +133,15 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Budget */}
+        <BudgetPanel steps={relevantSteps} completedStepIds={completedStepIds} />
+
         {/* Summary Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <SummaryCard
             label="Прогрес"
             value={`${progressPercent}%`}
             sub={`${completedStepIds.length} от ${totalSteps} стъпки`}
-          />
-          <SummaryCard
-            label="Оставащ бюджет"
-            value={`€${remainingCostEUR.toFixed(0)}`}
-            sub={`Задължителни: €${mandatoryCostEUR.toFixed(0)}`}
           />
           <SummaryCard
             label="Следваща стъпка"

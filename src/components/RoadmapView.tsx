@@ -5,6 +5,7 @@ import { Category, Step } from "@/data/roadmap"
 import { Check, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { CategoryIconBadge } from "@/lib/categoryIcons"
+import { bgnToEur } from "@/lib/currency"
 
 interface Props {
   categories: Category[]
@@ -151,7 +152,7 @@ function StepRow({
       {/* Cost */}
       {step.estimatedCostBGN > 0 && (
         <span className="text-xs text-slate-500 dark:text-slate-400">
-          €{(step.estimatedCostBGN / 1.95583).toFixed(0)}
+          €{bgnToEur(step.estimatedCostBGN).toFixed(0)}
         </span>
       )}
 

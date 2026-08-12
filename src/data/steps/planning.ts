@@ -71,6 +71,7 @@ export const planningSteps: Step[] = [
       { index: 4, label: "Добави 20% буфер за непредвидени" },
       { index: 5, label: "Сравни с наличния си бюджет — готов ли си?" },
     ],
+    relatedArticles: ["eood-danatsi-i-osigurovki", "minimalen-osiguritelen-dohod-sol", "patenten-danak-et-vs-eood"],
   },
   {
     id: "planning-timeline",

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { AuthProvider } from "@/components/AuthProvider";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
+
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,6 +28,9 @@ export const metadata: Metadata = {
     siteName: "Business Launch Navigator",
     locale: "bg_BG",
     type: "website",
+  },
+  verification: {
+    google: "B00ZlrBXrdCSvDPwvO6fJd2kYE2UhbiYQVNaR0FbAXg",
   },
 };
 
@@ -56,6 +62,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col font-sans">
         <AuthProvider>{children}</AuthProvider>
       </body>
+      {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
     </html>
   );
 }

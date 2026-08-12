@@ -196,6 +196,7 @@ export const legalSteps: Step[] = [
       { index: 2, label: "Реши дали регистрацията е задължителна, препоръчителна или ненужна засега" },
       { index: 3, label: "При съмнение — консултирай се със счетоводител" },
     ],
+    relatedArticles: ["fakturirane-chujdbina-dds-eood", "dds-registracia-prag-vod-vop"],
   },
   {
     id: "legal-accountant",
@@ -232,5 +233,6 @@ export const legalSteps: Step[] = [
       { index: 2, label: "Попитай: какво е включено, какви са сроковете" },
       { index: 3, label: "Подпиши договор" },
     ],
+    relatedArticles: ["schetovodna-kantora-vs-samostoyatelno", "godishno-priklyuchvane-gfo-gdd"],
   },
 ]

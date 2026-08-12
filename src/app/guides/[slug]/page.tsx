@@ -1,12 +1,23 @@
 import Link from "next/link"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { ArrowLeft, Calendar } from "lucide-react"
+import { ArrowLeft, Calendar, ListChecks } from "lucide-react"
 import { getArticleBySlug, getAllArticleSlugs } from "@/data/knowledge"
+import { STEPS, CATEGORIES } from "@/data/roadmap"
 import { ArticleBlocks } from "@/components/ArticleBlocks"
 import { ArticleHero } from "@/components/ArticleHero"
 import { Logo } from "@/components/Logo"
 import { Footer } from "@/components/Footer"
+import { InsuranceCalculator } from "@/components/InsuranceCalculator"
+import { VatChecker } from "@/components/VatChecker"
+
+/** Article slugs that embed one of the interactive calculators after the article body. */
+const ARTICLE_CALCULATORS: Record<string, "insurance" | "vat"> = {
+  "minimalen-osiguritelen-dohod-sol": "insurance",
+  "eood-danatsi-i-osigurovki": "insurance",
+  "dds-registracia-prag-vod-vop": "vat",
+  "fakturirane-chujdbina-dds-eood": "vat",
+}
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -37,6 +48,8 @@ export default async function ArticlePage({ params }: Props) {
   const { slug } = await params
   const article = getArticleBySlug(slug)
   if (!article) return notFound()
+
+  const relatedSteps = STEPS.filter((s) => s.relatedArticles?.includes(article.slug))
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -97,6 +110,42 @@ export default async function ArticlePage({ params }: Props) {
           <div className="mt-6">
             <ArticleBlocks blocks={article.blocks} />
           </div>
+
+          {ARTICLE_CALCULATORS[article.slug] === "insurance" && (
+            <div className="mt-6">
+              <InsuranceCalculator />
+            </div>
+          )}
+          {ARTICLE_CALCULATORS[article.slug] === "vat" && (
+            <div className="mt-6">
+              <VatChecker />
+            </div>
+          )}
+
+          {relatedSteps.length > 0 && (
+            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+              <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wide">
+                Свързани стъпки от чеклиста
+              </h3>
+              <ul className="space-y-2 mt-3">
+                {relatedSteps.map((step) => {
+                  const category = CATEGORIES.find((c) => c.id === step.categoryId)
+                  return (
+                    <li key={step.id}>
+                      <Link
+                        href={`/step/${step.id}`}
+                        className="inline-flex items-center gap-1.5 text-sm text-blue-600 dark:text-blue-400 hover:underline"
+                      >
+                        <ListChecks className="w-3.5 h-3.5 flex-shrink-0" />
+                        {category?.label ? `${category.label}: ` : ""}
+                        {step.title}
+                      </Link>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          )}
         </article>
       </main>
 

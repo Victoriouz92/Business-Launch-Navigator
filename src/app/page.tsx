@@ -2,6 +2,7 @@ import Link from "next/link"
 import { ClipboardList, Wallet, Scale, type LucideIcon } from "lucide-react"
 import { BetaNotice } from "@/components/BetaNotice"
 import { Logo } from "@/components/Logo"
+import { HomeCTA } from "@/components/HomeCTA"
 
 export default function Home() {
   return (
@@ -34,12 +35,7 @@ export default function Home() {
 
         {/* CTA */}
         <div className="flex flex-col items-center gap-3 mt-6">
-          <Link
-            href="/onboarding"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-3.5 text-white font-semibold text-lg hover:bg-blue-700 transition-colors"
-          >
-            Старт
-          </Link>
+          <HomeCTA />
           <p className="text-xs text-slate-500 dark:text-slate-400">
             Влизането е по избор — само за да запазиш прогреса на всички устройства.
           </p>

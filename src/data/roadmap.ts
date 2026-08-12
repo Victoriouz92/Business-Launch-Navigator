@@ -58,6 +58,8 @@ export interface Step {
   subTasks: SubTask[]
   /** Business types this step does NOT apply to. Undefined = relevant to everyone. */
   notRelevantFor?: BusinessType[]
+  /** Slugs of related Наръчници (knowledge) articles, in src/data/knowledge.ts */
+  relatedArticles?: string[]
 }
 
 export interface Category {

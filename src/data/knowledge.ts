@@ -2,8 +2,10 @@
 // Mirrors the pattern used by roadmap.ts / data/steps — one file per
 // article under src/data/knowledge/, aggregated here.
 
+import type { ArticleIconKey, HeadingIconKey } from "@/lib/articleIcons"
+
 export type ArticleBlock =
-  | { type: "heading"; text: string; icon?: string }
+  | { type: "heading"; text: string; icon?: HeadingIconKey }
   | { type: "paragraph"; text: string }
   | { type: "flow"; items: string[] }
   | {
@@ -23,7 +25,7 @@ export interface Article {
   publishedDate: string
   updatedDate?: string
   /** Key into ARTICLE_ICONS (src/lib/articleIcons.ts) for the hero banner */
-  heroIcon: string
+  heroIcon: ArticleIconKey
   /** Key into ARTICLE_TONES (src/lib/articleIcons.ts) for the hero banner color */
   heroTone?: "blue" | "emerald" | "violet" | "amber" | "red" | "teal" | "indigo"
   blocks: ArticleBlock[]
@@ -42,6 +44,11 @@ import { stapkiSledRegistraciaEood } from "./knowledge/stapki-sled-registracia-e
 import { firmaBezDeynostZadaljenia } from "./knowledge/firma-bez-deynost-zadaljenia"
 import { fakturiraneChujdbinaDdsEood } from "./knowledge/fakturirane-chujdbina-dds-eood"
 import { kasovAparatVsPochtenskiPrevod } from "./knowledge/kasov-aparat-vs-pochtenski-prevod"
+import { minimalenOsiguritelenDohodSol } from "./knowledge/minimalen-osiguritelen-dohod-sol"
+import { schetovodnaKantoraVsSamostoyatelno } from "./knowledge/schetovodna-kantora-vs-samostoyatelno"
+import { godishnoPriklyuchvaneGfoGdd } from "./knowledge/godishno-priklyuchvane-gfo-gdd"
+import { patentenDanakEtVsEood } from "./knowledge/patenten-danak-et-vs-eood"
+import { ddsRegistraciaPragVodVop } from "./knowledge/dds-registracia-prag-vod-vop"
 
 export const ARTICLES: Article[] = [
   kakSeRegistriraEood,
@@ -57,6 +64,11 @@ export const ARTICLES: Article[] = [
   firmaBezDeynostZadaljenia,
   fakturiraneChujdbinaDdsEood,
   kasovAparatVsPochtenskiPrevod,
+  minimalenOsiguritelenDohodSol,
+  schetovodnaKantoraVsSamostoyatelno,
+  godishnoPriklyuchvaneGfoGdd,
+  patentenDanakEtVsEood,
+  ddsRegistraciaPragVodVop,
 ]
 
 export function getArticleBySlug(slug: string): Article | undefined {

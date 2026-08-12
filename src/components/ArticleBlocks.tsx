@@ -1,50 +1,7 @@
 import Link from "next/link"
-import {
-  TrendingUp,
-  ListChecks,
-  Lightbulb,
-  Wrench,
-  BookOpen,
-  Info,
-  ArrowRight,
-  Scale,
-  PiggyBank,
-  FileText,
-  BarChart3,
-  Landmark,
-  CreditCard,
-  Clock,
-  Banknote,
-  Tag,
-  Globe,
-  ShoppingCart,
-  Search,
-  Users,
-  HelpCircle,
-  type LucideIcon,
-} from "lucide-react"
+import { BookOpen, Info, ArrowRight } from "lucide-react"
+import { HEADING_ICONS } from "@/lib/articleIcons"
 import type { ArticleBlock } from "@/data/knowledge"
-
-const HEADING_ICONS: Record<string, LucideIcon> = {
-  "trending-up": TrendingUp,
-  "list-checks": ListChecks,
-  lightbulb: Lightbulb,
-  wrench: Wrench,
-  scale: Scale,
-  "piggy-bank": PiggyBank,
-  "file-text": FileText,
-  "bar-chart": BarChart3,
-  landmark: Landmark,
-  "credit-card": CreditCard,
-  clock: Clock,
-  banknote: Banknote,
-  tag: Tag,
-  globe: Globe,
-  "shopping-cart": ShoppingCart,
-  search: Search,
-  users: Users,
-  question: HelpCircle,
-}
 
 /** Renders **bold** segments inside inline text as <strong>. */
 function Inline({ text }: { text: string }) {

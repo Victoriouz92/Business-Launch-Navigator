@@ -33,6 +33,16 @@ export function Footer() {
               <li>Последна проверка: август 2026</li>
             </ul>
           </div>
+
+          <div className="flex items-center gap-3 text-xs text-slate-400 dark:text-slate-500">
+            <Link href="/privacy" className="hover:text-slate-600 dark:hover:text-slate-300 hover:underline">
+              Поверителност
+            </Link>
+            <span aria-hidden="true">·</span>
+            <Link href="/terms" className="hover:text-slate-600 dark:hover:text-slate-300 hover:underline">
+              Условия за ползване
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

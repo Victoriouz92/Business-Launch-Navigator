@@ -24,8 +24,10 @@ export default function PrivacyPage() {
         <div className="mt-8 space-y-8 text-sm leading-relaxed text-slate-700 dark:text-slate-300">
           <Section title="Кой обработва данните">
             <p>
-              Business Launch Navigator се разработва и поддържа от VV Labs. За въпроси относно тази
-              политика или твоите данни, пиши ни през{" "}
+              Business Launch Navigator се разработва и поддържа от Виктор Велев (Victor Velev), под
+              името VV Labs. Проектът не е регистрирано юридическо лице — VV Labs е име на проекта, не
+              на фирма. Администратор на личните данни е физическото лице Виктор Велев. За въпроси
+              относно тази политика или твоите данни, пиши през{" "}
               <Link href="/contact" className="text-blue-600 dark:text-blue-400 hover:underline">
                 формата за контакт
               </Link>

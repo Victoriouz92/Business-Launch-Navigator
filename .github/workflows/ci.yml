@@ -26,11 +26,14 @@ jobs:
 
       - run: npm ci
 
+      # `next build` generates .next/types (needed by tsc for helpers like
+      # LayoutProps) and does its own type-check — run it before the
+      # standalone tsc pass, or a clean checkout fails on missing types.
+      - name: Build
+        run: npm run build
+
       - name: Type check
         run: npx tsc --noEmit
 
       - name: Unit tests
         run: npm test
-
-      - name: Build
-        run: npm run build

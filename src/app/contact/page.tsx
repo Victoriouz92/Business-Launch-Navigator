@@ -37,7 +37,7 @@ export default function ContactPage() {
 
   if (status === "sent") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
+      <main id="main-content" className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4">
         <div className="max-w-sm text-center">
           <p className="text-lg font-semibold text-slate-900 dark:text-white">
             Съобщението е изпратено
@@ -52,12 +52,12 @@ export default function ContactPage() {
             ← Начало
           </Link>
         </div>
-      </div>
+      </main>
     )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-10">
+    <main id="main-content" className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-10">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -123,6 +123,6 @@ export default function ContactPage() {
           </Link>
         </p>
       </div>
-    </div>
+    </main>
   )
 }

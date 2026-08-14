@@ -101,7 +101,7 @@ export default async function StepPage({ params }: Props) {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-8">
+      <main id="main-content" className="max-w-3xl mx-auto px-4 py-8 space-y-8">
         {/* Priority + Difficulty + Cost + Time — at-a-glance summary */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <AccentCard

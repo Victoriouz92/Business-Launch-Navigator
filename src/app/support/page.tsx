@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function SupportPage() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10">
+    <main id="main-content" className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10">
       <div className="max-w-lg mx-auto">
         <Link
           href="/"
@@ -19,6 +19,6 @@ export default function SupportPage() {
           <SupportProject variant="full" />
         </div>
       </div>
-    </div>
+    </main>
   )
 }

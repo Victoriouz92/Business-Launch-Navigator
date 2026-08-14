@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10">
+    <main id="main-content" className="min-h-screen bg-slate-50 dark:bg-slate-950 px-4 py-10">
       <div className="max-w-2xl mx-auto">
         <Link href="/" className="text-sm text-slate-500 dark:text-slate-400 hover:underline">
           ← Начало
@@ -146,7 +146,7 @@ export default function PrivacyPage() {
           </Section>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
 

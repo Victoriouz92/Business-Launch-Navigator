@@ -86,7 +86,7 @@ export default async function ArticlePage({ params }: Props) {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-10">
+      <main id="main-content" className="max-w-3xl mx-auto px-4 py-10">
         <nav className="text-xs text-slate-400 dark:text-slate-500 mb-4">
           <Link href="/guides" className="hover:underline">Наръчници</Link>
           <span className="mx-1.5">/</span>

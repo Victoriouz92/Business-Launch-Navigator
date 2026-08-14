@@ -7,7 +7,7 @@ import { HomeCTA } from "@/components/HomeCTA"
 export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
-      <main className="flex flex-col items-center gap-8 px-6 py-16 text-center max-w-2xl">
+      <main id="main-content" className="flex flex-col items-center gap-8 px-6 py-16 text-center max-w-2xl">
         <div className="w-full max-w-md">
           <BetaNotice />
         </div>

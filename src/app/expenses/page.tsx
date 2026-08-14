@@ -111,7 +111,7 @@ export default function ExpensesPage() {
         </div>
       </header>
 
-      <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
+      <main id="main-content" className="max-w-3xl mx-auto px-4 py-8 space-y-6">
         {/* Totals */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <TotalCard label="Общо" value={total} />
@@ -210,7 +210,7 @@ export default function ExpensesPage() {
                     <td className="px-2 py-3">
                       <button
                         onClick={() => deleteExpense(exp.id)}
-                        className="p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        className="p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-slate-500 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                         aria-label={`Изтрий ${exp.name}`}
                       >
                         <Trash2 className="w-4 h-4" />

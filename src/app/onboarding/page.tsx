@@ -37,7 +37,7 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-10">
+    <main id="main-content" className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 px-4 py-10">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="inline-flex">
@@ -115,7 +115,7 @@ export default function OnboardingPage() {
 
           <fieldset>
             <legend className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
-              Какъв бюджет си предвидил за стартиране на бизнеса? <span className="text-slate-400 font-normal">(по избор)</span>
+              Какъв бюджет си предвидил за стартиране на бизнеса? <span className="text-slate-500 dark:text-slate-400 font-normal">(по избор)</span>
             </legend>
             <div className="flex items-center gap-2">
               <input
@@ -144,6 +144,6 @@ export default function OnboardingPage() {
           </button>
         </form>
       </div>
-    </div>
+    </main>
   )
 }

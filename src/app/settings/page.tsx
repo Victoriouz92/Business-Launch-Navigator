@@ -62,7 +62,7 @@ export default function SettingsPage() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto px-4 py-8 space-y-6">
+      <main id="main-content" className="max-w-2xl mx-auto px-4 py-8 space-y-6">
         <div className="rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-5">
           <h2 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wide mb-3">
             Акаунт

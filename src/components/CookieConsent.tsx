@@ -40,12 +40,12 @@ export function CookieConsent({ gaId }: { gaId?: string }) {
 
       {loaded && consent === null && (
         <div
-          role="dialog"
+          role="region"
           aria-label="Съгласие за бисквитки"
           className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-lg"
         >
           <div className="max-w-3xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center gap-3">
-            <Cookie className="hidden sm:block w-5 h-5 text-slate-400 flex-shrink-0" />
+            <Cookie className="hidden sm:block w-5 h-5 text-slate-500 dark:text-slate-400 flex-shrink-0" />
             <p className="flex-1 text-sm text-slate-600 dark:text-slate-300">
               Използваме бисквитки за анализ на посещенията (Google Analytics), само след твоето съгласие. Прочети{" "}
               <Link href="/privacy" className="text-blue-600 dark:text-blue-400 hover:underline">

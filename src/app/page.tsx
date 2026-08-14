@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { ClipboardList, Wallet, Scale, type LucideIcon } from "lucide-react"
+import { ClipboardList, Wallet, Scale, Building2, type LucideIcon } from "lucide-react"
 import { BetaNotice } from "@/components/BetaNotice"
 import { Logo } from "@/components/Logo"
 import { HomeCTA } from "@/components/HomeCTA"
@@ -12,6 +12,12 @@ export default function Home() {
           <BetaNotice />
         </div>
 
+        {/* Specificity badge */}
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 dark:bg-blue-950/50 px-4 py-1.5 text-sm font-semibold text-blue-700 dark:text-blue-300">
+          <Building2 className="w-4 h-4" />
+          Специализирано за регистрация на ЕООД
+        </span>
+
         {/* Logo / Brand */}
         <div className="flex items-center gap-3">
           <Logo size="lg" />
@@ -22,7 +28,7 @@ export default function Home() {
 
         {/* Tagline */}
         <p className="text-lg text-slate-600 dark:text-slate-300 max-w-md leading-relaxed">
-          Твоят пътеводител за стартиране на бизнес в България.
+          Твоят пътеводител за <strong className="font-semibold text-slate-900 dark:text-white">регистрация на ЕООД</strong> в България.
           Стъпка по стъпка — от идея до първия клиент.
         </p>
 

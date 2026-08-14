@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { ClipboardList, Wallet, Scale, Building2, type LucideIcon } from "lucide-react"
-import { BetaNotice } from "@/components/BetaNotice"
 import { Logo } from "@/components/Logo"
 import { HomeCTA } from "@/components/HomeCTA"
 
@@ -8,10 +7,6 @@ export default function Home() {
   return (
     <div className="flex flex-col flex-1 items-center justify-center min-h-screen bg-gradient-to-b from-slate-50 to-white dark:from-slate-950 dark:to-slate-900">
       <main id="main-content" className="flex flex-col items-center gap-8 px-6 py-16 text-center max-w-2xl">
-        <div className="w-full max-w-md">
-          <BetaNotice />
-        </div>
-
         {/* Specificity badge */}
         <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 dark:bg-blue-950/50 px-4 py-1.5 text-sm font-semibold text-blue-700 dark:text-blue-300">
           <Building2 className="w-4 h-4" />
@@ -49,7 +44,7 @@ export default function Home() {
 
         {/* Trust note */}
         <p className="text-sm text-slate-500 dark:text-slate-400 mt-2">
-          Напълно безплатно през бета фазата • Без кредитна карта • Фокус върху ЕООД в България
+          Напълно безплатно • Без кредитна карта • Фокус върху ЕООД в България
         </p>
 
         {/* Secondary links */}

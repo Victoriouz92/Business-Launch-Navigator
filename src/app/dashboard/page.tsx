@@ -5,7 +5,6 @@ import { RoadmapView } from "@/components/RoadmapView"
 import { BudgetPanel } from "@/components/BudgetPanel"
 import { ThemeToggle } from "@/components/ThemeToggle"
 import { Footer } from "@/components/Footer"
-import { BetaNotice } from "@/components/BetaNotice"
 import { Logo } from "@/components/Logo"
 import { UserMenu } from "@/components/UserMenu"
 import { useProgress } from "@/hooks/useProgress"
@@ -104,10 +103,6 @@ export default function DashboardPage() {
       </header>
 
       <main id="main-content" className="max-w-5xl mx-auto px-4 py-8">
-        <div className="mb-6">
-          <BetaNotice />
-        </div>
-
         {/* Progress bar */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">

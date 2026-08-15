@@ -14,8 +14,8 @@ export default function Home() {
         </span>
 
         {/* Logo / Brand */}
-        <div className="flex items-center gap-3">
-          <Logo size="lg" />
+        <div className="flex flex-col items-center gap-4">
+          <Logo size="xl" letters />
           <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Business Launch Navigator
           </h1>

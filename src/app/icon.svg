@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <g><path d="M32 2 L32 32 L24 24 Z" fill="#2563eb"></path><path d="M32 2 L40 24 L32 32 Z" fill="#1e3a8a"></path></g>
+  <g transform="rotate(90 32 32)"><path d="M32 2 L32 32 L24 24 Z" fill="#201e1d"></path><path d="M32 2 L40 24 L32 32 Z" fill="#1e3a8a"></path></g>
+  <g transform="rotate(180 32 32)"><path d="M32 2 L32 32 L24 24 Z" fill="#201e1d"></path><path d="M32 2 L40 24 L32 32 Z" fill="#1e3a8a"></path></g>
+  <g transform="rotate(270 32 32)"><path d="M32 2 L32 32 L24 24 Z" fill="#201e1d"></path><path d="M32 2 L40 24 L32 32 Z" fill="#1e3a8a"></path></g>
+</svg>

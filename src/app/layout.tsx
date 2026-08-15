@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Source_Serif_4 } from "next/font/google";
 import { AuthProvider } from "@/components/AuthProvider";
 import { CookieConsent } from "@/components/CookieConsent";
 import { SITE_URL } from "@/lib/site";
@@ -17,10 +17,20 @@ const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
 });
 
+// Used only by the "ЕООД" ring text in the Logo mark — loading it here
+// (rather than converting the letters to outline paths) means the live
+// <text> in that inline SVG always resolves this face instead of falling
+// back to a system serif.
+const sourceSerif4 = Source_Serif_4({
+  variable: "--font-source-serif",
+  weight: ["600"],
+  subsets: ["latin", "cyrillic"],
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Business Launch Navigator — Пътеводител за бизнес",
+    default: "Business Launch Navigator — Пътеводител За ЕООД",
     template: "%s",
   },
   description: "Интерактивна платформа за стартиране на бизнес в България. Стъпка по стъпка — от идея до първия клиент.",
@@ -39,7 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="bg"
       suppressHydrationWarning
-      className={`${inter.variable} ${spaceGrotesk.variable} h-full antialiased`}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${sourceSerif4.variable} h-full antialiased`}
     >
       <head>
         <script

@@ -8,6 +8,7 @@ import { ArticleBlocks } from "@/components/ArticleBlocks"
 import { ArticleHero } from "@/components/ArticleHero"
 import { Logo } from "@/components/Logo"
 import { Footer } from "@/components/Footer"
+import { SmartHomeLink } from "@/components/SmartHomeLink"
 import { InsuranceCalculator } from "@/components/InsuranceCalculator"
 import { VatChecker } from "@/components/VatChecker"
 
@@ -79,10 +80,10 @@ export default async function ArticlePage({ params }: Props) {
           >
             <ArrowLeft className="w-5 h-5 text-slate-600 dark:text-slate-300" />
           </Link>
-          <Link href="/" className="flex items-center gap-2.5">
+          <SmartHomeLink className="flex items-center gap-2.5">
             <Logo size="sm" />
             <span className="font-bold text-slate-900 dark:text-white">Business Launch Navigator</span>
-          </Link>
+          </SmartHomeLink>
         </div>
       </header>
 

@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Key dark: utilities off the .dark class on <html> (toggled by useTheme),
+   not just OS preference — Tailwind v4 defaults to prefers-color-scheme only. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #ffffff;
   --foreground: #171717;

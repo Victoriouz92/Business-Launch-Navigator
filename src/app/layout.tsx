@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Space_Grotesk, Source_Serif_4 } from "next/font/google";
 import { AuthProvider } from "@/components/AuthProvider";
+import { BackspaceNav } from "@/components/BackspaceNav";
 import { CookieConsent } from "@/components/CookieConsent";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -77,6 +78,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Към съдържанието
         </a>
         <AuthProvider>{children}</AuthProvider>
+        <BackspaceNav />
         <CookieConsent gaId={GA_MEASUREMENT_ID} />
       </body>
     </html>
